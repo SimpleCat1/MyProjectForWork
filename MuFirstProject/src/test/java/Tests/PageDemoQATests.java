@@ -1,5 +1,5 @@
 package Tests;
-import com.codeborne.selenide.Configuration;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import java.io.File;
@@ -9,21 +9,21 @@ import static com.codeborne.selenide.Selenide.element;
 import static com.codeborne.selenide.Selenide.open;
 
 
-public class PageDemoQATests {
-
+public class PageDemoQATests extends  FixtureHelper{
+    Faker faker = new Faker();
     private String urlSite = Data.urlSite;
-    private String firstName = "Игорь";
-    private String lastName = "Игоревич";
+    private String firstName = faker.name().firstName();
+    private String lastName = faker.name().lastName();
     private String gender = "Male";
     private String birthday = "4 April,2022";
     private String email = "igor@mail.ru";
-    private String mobileNumber = "1111111111";
+    private String mobileNumber = faker.number().digits(10);
     private String subject = "a";
     private String subjectSelection = "Math";
     private String hobie = "Sports";
     private String namePicture = "weegschaal-emoticon-sterrenbeeld.gif";
     private String pathPicture = "src\\weegschaal-emoticon-sterrenbeeld.gif";
-    private String currentAddress = "person";
+    private String currentAddress = faker.address().streetAddress();
     private String state = "Uttar Pradesh";
     private String city = "Lucknow";
     private By firstNameLocator = byXpath("//input[@id='firstName']");
@@ -32,6 +32,10 @@ public class PageDemoQATests {
     private By genderRadioLocator = byXpath("//label[@class='custom-control-label' and text()='Male']");
     private By mobileNumberLocator = byXpath("//input[@id='userNumber']");
     private By dateOfBirthInputLocator = byXpath("//input[@id='dateOfBirthInput']");
+    private By yearLocator = byXpath("//select[@class='react-datepicker__month-select']");
+    private By yearListLocator = byXpath("//select[@class='react-datepicker__month-select']/option[text()='April']");
+    private By monthLocator = byXpath("//select[@class='react-datepicker__year-select']");
+    private By monthListLocator = byXpath("//select[@class='react-datepicker__year-select']/option[text()='2022']");
     private By dateOfBirthInputCalendarLocator = byXpath("//div[text()='4'][1]");
     private By subjectLocator = byXpath("//input[@id='subjectsInput']");
     private By subjectSelectionLocator = byXpath("//div[@id='react-select-2-option-0']");
@@ -57,8 +61,6 @@ public class PageDemoQATests {
 
     @Test
     public void StudentRegistrationForm_fillingInFieldsWithData_AppearSubmittingForm() {
-        System.setProperty("selenide.browser", "Firefox");
-        Configuration.startMaximized = true;
         open(urlSite);
         element(firstNameLocator).setValue(firstName);
         element(lastNameLocator).setValue(lastName);
@@ -66,6 +68,10 @@ public class PageDemoQATests {
         element(genderRadioLocator).click();
         element(mobileNumberLocator).setValue(mobileNumber);
         element(dateOfBirthInputLocator).click();
+        element(yearLocator).click();
+        element(yearListLocator).click();
+        element(monthLocator).click();
+        element(monthListLocator).click();
         element(dateOfBirthInputCalendarLocator).click();
         element(subjectLocator).setValue(subject);
         element(subjectSelectionLocator).click();
